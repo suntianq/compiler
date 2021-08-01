@@ -1,0 +1,47 @@
+
+;; Function main (main, funcdef_no=0, decl_uid=2247, cgraph_uid=0, symbol_order=0)
+
+main ()
+{
+  int m;
+  int n;
+  int t;
+  int i;
+  int b;
+  int a;
+  int D.2259;
+
+  <bb 2> [0.00%]:
+  a = 0;
+  b = 1;
+  i = 1;
+  m = 100;
+  scanf ("%d", &n);
+  printf ("%d\n", a);
+  printf ("%d\n", b);
+  goto <bb 4>; [0.00%]
+
+  <bb 3> [0.00%]:
+  t = b;
+  b = a + b;
+  printf ("%d\n", b);
+  a = t;
+  i = i + 1;
+
+  <bb 4> [0.00%]:
+  n.0_1 = n;
+  if (i < n.0_1)
+    goto <bb 3>; [0.00%]
+  else
+    goto <bb 5>; [0.00%]
+
+  <bb 5> [0.00%]:
+  n = {CLOBBER};
+  D.2259 = 0;
+
+<L3> [0.00%]:
+  return D.2259;
+
+}
+
+

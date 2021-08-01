@@ -1,0 +1,52 @@
+
+;; Function main (main, funcdef_no=0, decl_uid=2247, cgraph_uid=0, symbol_order=0)
+
+main ()
+{
+  int m;
+  int n;
+  int t;
+  int i;
+  int b;
+  int a;
+  int D.2259;
+  int n.0_1;
+  int _15;
+
+  <bb 2> [0.00%]:
+  a_6 = 0;
+  b_7 = 1;
+  i_8 = 1;
+  m_9 = 100;
+  scanf ("%d", &n);
+  printf ("%d\n", a_6);
+  printf ("%d\n", b_7);
+  goto <bb 4>; [0.00%]
+
+  <bb 3> [0.00%]:
+  t_16 = b_3;
+  b_17 = a_2 + b_3;
+  printf ("%d\n", b_17);
+  a_19 = t_16;
+  i_20 = i_4 + 1;
+
+  <bb 4> [0.00%]:
+  # a_2 = PHI <a_6(2), a_19(3)>
+  # b_3 = PHI <b_7(2), b_17(3)>
+  # i_4 = PHI <i_8(2), i_20(3)>
+  n.0_1 = n;
+  if (i_4 < n.0_1)
+    goto <bb 3>; [0.00%]
+  else
+    goto <bb 5>; [0.00%]
+
+  <bb 5> [0.00%]:
+  n ={v} {CLOBBER};
+  _15 = 0;
+
+<L3> [0.00%]:
+  return _15;
+
+}
+
+
