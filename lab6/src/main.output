@@ -1,0 +1,2416 @@
+Terminals unused in grammar
+
+    INCLUDE
+    DOUBLE
+    LONG
+    SHORT
+    THIS
+    DEFAULT
+    USING
+    SWITCH
+    CASE
+    BREAK
+    CONTINUE
+    DO
+    GOTO
+    CLASS
+    STRUCT
+    OPAND
+    OPOR
+    POWER
+    OPNOT
+    SHIFTL
+    SHIFTR
+    LBRACKET
+    RBRACKET
+    BIT_OR
+    SQUOTE
+    DQUOTE
+    COLON
+
+
+Rules useless in parser due to conflicts
+
+   54 assign_expr: id EQ assign_expr
+
+
+State 53 conflicts: 1 shift/reduce
+State 54 conflicts: 1 shift/reduce
+State 55 conflicts: 6 shift/reduce
+State 56 conflicts: 2 shift/reduce
+State 57 conflicts: 3 shift/reduce
+State 109 conflicts: 2 reduce/reduce
+State 116 conflicts: 16 reduce/reduce
+State 142 conflicts: 1 shift/reduce
+State 144 conflicts: 1 shift/reduce
+State 145 conflicts: 1 shift/reduce
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: INT MAIN LPAREN RPAREN compound_stmt
+    2        | VOID MAIN LPAREN RPAREN compound_stmt
+
+    3 compound_stmt: LBRACE stmt_list RBRACE
+    4              | LBRACE stmt_list RETURN expression SEMICOLON RBRACE
+    5              | LBRACE RBRACE
+
+    6 stmt_list: stmt_list stmt
+    7          | stmt
+
+    8 stmt: expr_stmt
+    9     | declaration
+   10     | if_stmt
+   11     | while_stmt
+   12     | for_stmt
+   13     | printf_stmt
+   14     | scanf_stmt
+   15     | ret_stmt
+
+   16 declaration: var_declaration
+   17            | const_declaration
+
+   18 var_declaration: type idlist SEMICOLON
+
+   19 const_declaration: CONST type idlist SEMICOLON
+
+   20 type: INT
+   21     | CHAR
+   22     | BOOL
+   23     | FLOAT
+   24     | STRING
+
+   25 idlist: idlist COMMA id_or_assign
+   26       | id_or_assign
+
+   27 id_or_assign: id
+   28             | assign_expr
+
+   29 id: ID
+
+   30 expr_stmt: expression SEMICOLON
+
+   31 if_stmt: IF LPAREN expression RPAREN stmt
+   32        | IF LPAREN expression RPAREN stmt ELSE stmt
+   33        | IF LPAREN expression RPAREN compound_stmt
+   34        | IF LPAREN expression RPAREN compound_stmt ELSE compound_stmt
+   35        | IF LPAREN expression RPAREN compound_stmt ELSE if_stmt
+
+   36 while_stmt: WHILE LPAREN expression RPAREN compound_stmt
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression SEMICOLON expression RPAREN compound_stmt
+   38         | FOR LPAREN var_declaration expression SEMICOLON expression RPAREN compound_stmt
+
+   39 scanf_stmt: SCANF LPAREN func_call_idlist RPAREN SEMICOLON
+
+   40 printf_stmt: PRINTF LPAREN func_call_idlist RPAREN SEMICOLON
+
+   41 ret_stmt: RETURN expression SEMICOLON
+
+   42 func_call_idlist: func_call_id
+   43                 | func_call_idlist COMMA func_call_id
+
+   44 func_call_id: expression
+   45             | factor
+   46             | conststring
+   47             | AND ID
+
+   48 conststring: CONSTSTRING
+
+   49 expression: assign_expr
+   50           | not_expression
+
+   51 assign_expr: id EQ expression
+   52            | id AEQ expression
+   53            | id SEQ expression
+   54            | id EQ assign_expr
+
+   55 not_expression: NOT or_expression
+   56               | or_expression
+
+   57 or_expression: or_expression OR and_expression
+   58              | and_expression
+
+   59 and_expression: and_expression AND relation_expr
+   60               | relation_expr
+
+   61 relation_expr: relation_expr GT op_expr
+   62              | relation_expr LT op_expr
+   63              | relation_expr EQUAL op_expr
+   64              | relation_expr NEQUAL op_expr
+   65              | relation_expr GE op_expr
+   66              | relation_expr LE op_expr
+   67              | TRUE
+   68              | FALSE
+   69              | op_expr
+
+   70 op_expr: id INC
+   71        | id DEC
+   72        | op_expr ADD term
+   73        | op_expr SUB term
+   74        | term
+
+   75 term: term MUL factor
+   76     | term DIV factor
+   77     | term MOD factor
+   78     | factor
+
+   79 factor: LPAREN expression RPAREN
+   80       | INTNUMBER
+   81       | id
+   82       | CONSTCHAR
+   83       | BIT_AND id
+   84       | SUB expression
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    INCLUDE (258)
+    INT (259) 1 20
+    BOOL (260) 22
+    TRUE (261) 67
+    FALSE (262) 68
+    CHAR (263) 21
+    FLOAT (264) 23
+    DOUBLE (265)
+    LONG (266)
+    SHORT (267)
+    VOID (268) 2
+    MAIN (269) 1 2
+    THIS (270)
+    DEFAULT (271)
+    USING (272)
+    IF (273) 31 32 33 34 35
+    ELSE (274) 32 34 35
+    SWITCH (275)
+    CASE (276)
+    FOR (277) 37 38
+    WHILE (278) 36
+    BREAK (279)
+    CONTINUE (280)
+    DO (281)
+    GOTO (282)
+    RETURN (283) 4 41
+    CLASS (284)
+    STRUCT (285)
+    CONST (286) 19
+    STRING (287) 24
+    SCANF (288) 39
+    PRINTF (289) 40
+    MOD (290) 77
+    INC (291) 70
+    DEC (292) 71
+    ADD (293) 72
+    SUB (294) 73 84
+    MUL (295) 75
+    DIV (296) 76
+    OPAND (297)
+    OPOR (298)
+    POWER (299)
+    OPNOT (300)
+    SHIFTL (301)
+    SHIFTR (302)
+    LPAREN (303) 1 2 31 32 33 34 35 36 37 38 39 40 79
+    RPAREN (304) 1 2 31 32 33 34 35 36 37 38 39 40 79
+    LBRACKET (305)
+    RBRACKET (306)
+    LBRACE (307) 3 4 5
+    RBRACE (308) 3 4 5
+    GT (309) 61
+    LT (310) 62
+    EQ (311) 51 54
+    EQUAL (312) 63
+    NEQUAL (313) 64
+    GE (314) 65
+    LE (315) 66
+    OR (316) 57
+    AND (317) 47 59
+    NOT (318) 55
+    BIT_AND (319) 83
+    BIT_OR (320)
+    AEQ (321) 52
+    SEQ (322) 53
+    SQUOTE (323)
+    DQUOTE (324)
+    COLON (325)
+    SEMICOLON (326) 4 18 19 30 37 38 39 40 41
+    COMMA (327) 25 43
+    CONSTCHAR (328) 82
+    CONSTSTRING (329) 48
+    ID (330) 29 47
+    INTNUMBER (331) 80
+    UMINUS (332)
+
+
+Nonterminals, with rules where they appear
+
+    $accept (78)
+        on left: 0
+    program (79)
+        on left: 1 2
+        on right: 0
+    compound_stmt (80)
+        on left: 3 4 5
+        on right: 1 2 33 34 35 36 37 38
+    stmt_list (81)
+        on left: 6 7
+        on right: 3 4 6
+    stmt (82)
+        on left: 8 9 10 11 12 13 14 15
+        on right: 6 7 31 32
+    declaration (83)
+        on left: 16 17
+        on right: 9
+    var_declaration (84)
+        on left: 18
+        on right: 16 38
+    const_declaration (85)
+        on left: 19
+        on right: 17
+    type (86)
+        on left: 20 21 22 23 24
+        on right: 18 19
+    idlist (87)
+        on left: 25 26
+        on right: 18 19 25
+    id_or_assign (88)
+        on left: 27 28
+        on right: 25 26
+    id (89)
+        on left: 29
+        on right: 27 51 52 53 54 70 71 81 83
+    expr_stmt (90)
+        on left: 30
+        on right: 8
+    if_stmt (91)
+        on left: 31 32 33 34 35
+        on right: 10 35
+    while_stmt (92)
+        on left: 36
+        on right: 11
+    for_stmt (93)
+        on left: 37 38
+        on right: 12
+    scanf_stmt (94)
+        on left: 39
+        on right: 14
+    printf_stmt (95)
+        on left: 40
+        on right: 13
+    ret_stmt (96)
+        on left: 41
+        on right: 15
+    func_call_idlist (97)
+        on left: 42 43
+        on right: 39 40 43
+    func_call_id (98)
+        on left: 44 45 46 47
+        on right: 42 43
+    conststring (99)
+        on left: 48
+        on right: 46
+    expression (100)
+        on left: 49 50
+        on right: 4 30 31 32 33 34 35 36 37 38 41 44 51 52 53 79 84
+    assign_expr (101)
+        on left: 51 52 53 54
+        on right: 28 49 54
+    not_expression (102)
+        on left: 55 56
+        on right: 50
+    or_expression (103)
+        on left: 57 58
+        on right: 55 56 57
+    and_expression (104)
+        on left: 59 60
+        on right: 57 58 59
+    relation_expr (105)
+        on left: 61 62 63 64 65 66 67 68 69
+        on right: 59 60 61 62 63 64 65 66
+    op_expr (106)
+        on left: 70 71 72 73 74
+        on right: 61 62 63 64 65 66 69 72 73
+    term (107)
+        on left: 75 76 77 78
+        on right: 72 73 74 75 76 77
+    factor (108)
+        on left: 79 80 81 82 83 84
+        on right: 45 75 76 77 78
+
+
+State 0
+
+    0 $accept: . program $end
+
+    INT   shift, and go to state 1
+    VOID  shift, and go to state 2
+
+    program  go to state 3
+
+
+State 1
+
+    1 program: INT . MAIN LPAREN RPAREN compound_stmt
+
+    MAIN  shift, and go to state 4
+
+
+State 2
+
+    2 program: VOID . MAIN LPAREN RPAREN compound_stmt
+
+    MAIN  shift, and go to state 5
+
+
+State 3
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+State 4
+
+    1 program: INT MAIN . LPAREN RPAREN compound_stmt
+
+    LPAREN  shift, and go to state 7
+
+
+State 5
+
+    2 program: VOID MAIN . LPAREN RPAREN compound_stmt
+
+    LPAREN  shift, and go to state 8
+
+
+State 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+State 7
+
+    1 program: INT MAIN LPAREN . RPAREN compound_stmt
+
+    RPAREN  shift, and go to state 9
+
+
+State 8
+
+    2 program: VOID MAIN LPAREN . RPAREN compound_stmt
+
+    RPAREN  shift, and go to state 10
+
+
+State 9
+
+    1 program: INT MAIN LPAREN RPAREN . compound_stmt
+
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 12
+
+
+State 10
+
+    2 program: VOID MAIN LPAREN RPAREN . compound_stmt
+
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 13
+
+
+State 11
+
+    3 compound_stmt: LBRACE . stmt_list RBRACE
+    4              | LBRACE . stmt_list RETURN expression SEMICOLON RBRACE
+    5              | LBRACE . RBRACE
+
+    INT        shift, and go to state 14
+    BOOL       shift, and go to state 15
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    CHAR       shift, and go to state 18
+    FLOAT      shift, and go to state 19
+    IF         shift, and go to state 20
+    FOR        shift, and go to state 21
+    WHILE      shift, and go to state 22
+    RETURN     shift, and go to state 23
+    CONST      shift, and go to state 24
+    STRING     shift, and go to state 25
+    SCANF      shift, and go to state 26
+    PRINTF     shift, and go to state 27
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    RBRACE     shift, and go to state 30
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    stmt_list          go to state 36
+    stmt               go to state 37
+    declaration        go to state 38
+    var_declaration    go to state 39
+    const_declaration  go to state 40
+    type               go to state 41
+    id                 go to state 42
+    expr_stmt          go to state 43
+    if_stmt            go to state 44
+    while_stmt         go to state 45
+    for_stmt           go to state 46
+    scanf_stmt         go to state 47
+    printf_stmt        go to state 48
+    ret_stmt           go to state 49
+    expression         go to state 50
+    assign_expr        go to state 51
+    not_expression     go to state 52
+    or_expression      go to state 53
+    and_expression     go to state 54
+    relation_expr      go to state 55
+    op_expr            go to state 56
+    term               go to state 57
+    factor             go to state 58
+
+
+State 12
+
+    1 program: INT MAIN LPAREN RPAREN compound_stmt .
+
+    $default  reduce using rule 1 (program)
+
+
+State 13
+
+    2 program: VOID MAIN LPAREN RPAREN compound_stmt .
+
+    $default  reduce using rule 2 (program)
+
+
+State 14
+
+   20 type: INT .
+
+    $default  reduce using rule 20 (type)
+
+
+State 15
+
+   22 type: BOOL .
+
+    $default  reduce using rule 22 (type)
+
+
+State 16
+
+   67 relation_expr: TRUE .
+
+    $default  reduce using rule 67 (relation_expr)
+
+
+State 17
+
+   68 relation_expr: FALSE .
+
+    $default  reduce using rule 68 (relation_expr)
+
+
+State 18
+
+   21 type: CHAR .
+
+    $default  reduce using rule 21 (type)
+
+
+State 19
+
+   23 type: FLOAT .
+
+    $default  reduce using rule 23 (type)
+
+
+State 20
+
+   31 if_stmt: IF . LPAREN expression RPAREN stmt
+   32        | IF . LPAREN expression RPAREN stmt ELSE stmt
+   33        | IF . LPAREN expression RPAREN compound_stmt
+   34        | IF . LPAREN expression RPAREN compound_stmt ELSE compound_stmt
+   35        | IF . LPAREN expression RPAREN compound_stmt ELSE if_stmt
+
+    LPAREN  shift, and go to state 59
+
+
+State 21
+
+   37 for_stmt: FOR . LPAREN expression SEMICOLON expression SEMICOLON expression RPAREN compound_stmt
+   38         | FOR . LPAREN var_declaration expression SEMICOLON expression RPAREN compound_stmt
+
+    LPAREN  shift, and go to state 60
+
+
+State 22
+
+   36 while_stmt: WHILE . LPAREN expression RPAREN compound_stmt
+
+    LPAREN  shift, and go to state 61
+
+
+State 23
+
+   41 ret_stmt: RETURN . expression SEMICOLON
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 62
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 24
+
+   19 const_declaration: CONST . type idlist SEMICOLON
+
+    INT     shift, and go to state 14
+    BOOL    shift, and go to state 15
+    CHAR    shift, and go to state 18
+    FLOAT   shift, and go to state 19
+    STRING  shift, and go to state 25
+
+    type  go to state 63
+
+
+State 25
+
+   24 type: STRING .
+
+    $default  reduce using rule 24 (type)
+
+
+State 26
+
+   39 scanf_stmt: SCANF . LPAREN func_call_idlist RPAREN SEMICOLON
+
+    LPAREN  shift, and go to state 64
+
+
+State 27
+
+   40 printf_stmt: PRINTF . LPAREN func_call_idlist RPAREN SEMICOLON
+
+    LPAREN  shift, and go to state 65
+
+
+State 28
+
+   84 factor: SUB . expression
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 66
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 29
+
+   79 factor: LPAREN . expression RPAREN
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 67
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 30
+
+    5 compound_stmt: LBRACE RBRACE .
+
+    $default  reduce using rule 5 (compound_stmt)
+
+
+State 31
+
+   55 not_expression: NOT . or_expression
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 68
+    or_expression   go to state 69
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 32
+
+   83 factor: BIT_AND . id
+
+    ID  shift, and go to state 34
+
+    id  go to state 70
+
+
+State 33
+
+   82 factor: CONSTCHAR .
+
+    $default  reduce using rule 82 (factor)
+
+
+State 34
+
+   29 id: ID .
+
+    $default  reduce using rule 29 (id)
+
+
+State 35
+
+   80 factor: INTNUMBER .
+
+    $default  reduce using rule 80 (factor)
+
+
+State 36
+
+    3 compound_stmt: LBRACE stmt_list . RBRACE
+    4              | LBRACE stmt_list . RETURN expression SEMICOLON RBRACE
+    6 stmt_list: stmt_list . stmt
+
+    INT        shift, and go to state 14
+    BOOL       shift, and go to state 15
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    CHAR       shift, and go to state 18
+    FLOAT      shift, and go to state 19
+    IF         shift, and go to state 20
+    FOR        shift, and go to state 21
+    WHILE      shift, and go to state 22
+    RETURN     shift, and go to state 71
+    CONST      shift, and go to state 24
+    STRING     shift, and go to state 25
+    SCANF      shift, and go to state 26
+    PRINTF     shift, and go to state 27
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    RBRACE     shift, and go to state 72
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    stmt               go to state 73
+    declaration        go to state 38
+    var_declaration    go to state 39
+    const_declaration  go to state 40
+    type               go to state 41
+    id                 go to state 42
+    expr_stmt          go to state 43
+    if_stmt            go to state 44
+    while_stmt         go to state 45
+    for_stmt           go to state 46
+    scanf_stmt         go to state 47
+    printf_stmt        go to state 48
+    ret_stmt           go to state 49
+    expression         go to state 50
+    assign_expr        go to state 51
+    not_expression     go to state 52
+    or_expression      go to state 53
+    and_expression     go to state 54
+    relation_expr      go to state 55
+    op_expr            go to state 56
+    term               go to state 57
+    factor             go to state 58
+
+
+State 37
+
+    7 stmt_list: stmt .
+
+    $default  reduce using rule 7 (stmt_list)
+
+
+State 38
+
+    9 stmt: declaration .
+
+    $default  reduce using rule 9 (stmt)
+
+
+State 39
+
+   16 declaration: var_declaration .
+
+    $default  reduce using rule 16 (declaration)
+
+
+State 40
+
+   17 declaration: const_declaration .
+
+    $default  reduce using rule 17 (declaration)
+
+
+State 41
+
+   18 var_declaration: type . idlist SEMICOLON
+
+    ID  shift, and go to state 34
+
+    idlist        go to state 74
+    id_or_assign  go to state 75
+    id            go to state 76
+    assign_expr   go to state 77
+
+
+State 42
+
+   51 assign_expr: id . EQ expression
+   52            | id . AEQ expression
+   53            | id . SEQ expression
+   54            | id . EQ assign_expr
+   70 op_expr: id . INC
+   71        | id . DEC
+   81 factor: id .
+
+    INC  shift, and go to state 78
+    DEC  shift, and go to state 79
+    EQ   shift, and go to state 80
+    AEQ  shift, and go to state 81
+    SEQ  shift, and go to state 82
+
+    $default  reduce using rule 81 (factor)
+
+
+State 43
+
+    8 stmt: expr_stmt .
+
+    $default  reduce using rule 8 (stmt)
+
+
+State 44
+
+   10 stmt: if_stmt .
+
+    $default  reduce using rule 10 (stmt)
+
+
+State 45
+
+   11 stmt: while_stmt .
+
+    $default  reduce using rule 11 (stmt)
+
+
+State 46
+
+   12 stmt: for_stmt .
+
+    $default  reduce using rule 12 (stmt)
+
+
+State 47
+
+   14 stmt: scanf_stmt .
+
+    $default  reduce using rule 14 (stmt)
+
+
+State 48
+
+   13 stmt: printf_stmt .
+
+    $default  reduce using rule 13 (stmt)
+
+
+State 49
+
+   15 stmt: ret_stmt .
+
+    $default  reduce using rule 15 (stmt)
+
+
+State 50
+
+   30 expr_stmt: expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 83
+
+
+State 51
+
+   49 expression: assign_expr .
+
+    $default  reduce using rule 49 (expression)
+
+
+State 52
+
+   50 expression: not_expression .
+
+    $default  reduce using rule 50 (expression)
+
+
+State 53
+
+   56 not_expression: or_expression .
+   57 or_expression: or_expression . OR and_expression
+
+    OR  shift, and go to state 84
+
+    OR        [reduce using rule 56 (not_expression)]
+    $default  reduce using rule 56 (not_expression)
+
+
+State 54
+
+   58 or_expression: and_expression .
+   59 and_expression: and_expression . AND relation_expr
+
+    AND  shift, and go to state 85
+
+    AND       [reduce using rule 58 (or_expression)]
+    $default  reduce using rule 58 (or_expression)
+
+
+State 55
+
+   60 and_expression: relation_expr .
+   61 relation_expr: relation_expr . GT op_expr
+   62              | relation_expr . LT op_expr
+   63              | relation_expr . EQUAL op_expr
+   64              | relation_expr . NEQUAL op_expr
+   65              | relation_expr . GE op_expr
+   66              | relation_expr . LE op_expr
+
+    GT      shift, and go to state 86
+    LT      shift, and go to state 87
+    EQUAL   shift, and go to state 88
+    NEQUAL  shift, and go to state 89
+    GE      shift, and go to state 90
+    LE      shift, and go to state 91
+
+    GT        [reduce using rule 60 (and_expression)]
+    LT        [reduce using rule 60 (and_expression)]
+    EQUAL     [reduce using rule 60 (and_expression)]
+    NEQUAL    [reduce using rule 60 (and_expression)]
+    GE        [reduce using rule 60 (and_expression)]
+    LE        [reduce using rule 60 (and_expression)]
+    $default  reduce using rule 60 (and_expression)
+
+
+State 56
+
+   69 relation_expr: op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    ADD       [reduce using rule 69 (relation_expr)]
+    SUB       [reduce using rule 69 (relation_expr)]
+    $default  reduce using rule 69 (relation_expr)
+
+
+State 57
+
+   74 op_expr: term .
+   75 term: term . MUL factor
+   76     | term . DIV factor
+   77     | term . MOD factor
+
+    MOD  shift, and go to state 94
+    MUL  shift, and go to state 95
+    DIV  shift, and go to state 96
+
+    MOD       [reduce using rule 74 (op_expr)]
+    MUL       [reduce using rule 74 (op_expr)]
+    DIV       [reduce using rule 74 (op_expr)]
+    $default  reduce using rule 74 (op_expr)
+
+
+State 58
+
+   78 term: factor .
+
+    $default  reduce using rule 78 (term)
+
+
+State 59
+
+   31 if_stmt: IF LPAREN . expression RPAREN stmt
+   32        | IF LPAREN . expression RPAREN stmt ELSE stmt
+   33        | IF LPAREN . expression RPAREN compound_stmt
+   34        | IF LPAREN . expression RPAREN compound_stmt ELSE compound_stmt
+   35        | IF LPAREN . expression RPAREN compound_stmt ELSE if_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 97
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 60
+
+   37 for_stmt: FOR LPAREN . expression SEMICOLON expression SEMICOLON expression RPAREN compound_stmt
+   38         | FOR LPAREN . var_declaration expression SEMICOLON expression RPAREN compound_stmt
+
+    INT        shift, and go to state 14
+    BOOL       shift, and go to state 15
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    CHAR       shift, and go to state 18
+    FLOAT      shift, and go to state 19
+    STRING     shift, and go to state 25
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    var_declaration  go to state 98
+    type             go to state 41
+    id               go to state 42
+    expression       go to state 99
+    assign_expr      go to state 51
+    not_expression   go to state 52
+    or_expression    go to state 53
+    and_expression   go to state 54
+    relation_expr    go to state 55
+    op_expr          go to state 56
+    term             go to state 57
+    factor           go to state 58
+
+
+State 61
+
+   36 while_stmt: WHILE LPAREN . expression RPAREN compound_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 100
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 62
+
+   41 ret_stmt: RETURN expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 101
+
+
+State 63
+
+   19 const_declaration: CONST type . idlist SEMICOLON
+
+    ID  shift, and go to state 34
+
+    idlist        go to state 102
+    id_or_assign  go to state 75
+    id            go to state 76
+    assign_expr   go to state 77
+
+
+State 64
+
+   39 scanf_stmt: SCANF LPAREN . func_call_idlist RPAREN SEMICOLON
+
+    TRUE         shift, and go to state 16
+    FALSE        shift, and go to state 17
+    SUB          shift, and go to state 28
+    LPAREN       shift, and go to state 29
+    AND          shift, and go to state 103
+    NOT          shift, and go to state 31
+    BIT_AND      shift, and go to state 32
+    CONSTCHAR    shift, and go to state 33
+    CONSTSTRING  shift, and go to state 104
+    ID           shift, and go to state 34
+    INTNUMBER    shift, and go to state 35
+
+    id                go to state 42
+    func_call_idlist  go to state 105
+    func_call_id      go to state 106
+    conststring       go to state 107
+    expression        go to state 108
+    assign_expr       go to state 51
+    not_expression    go to state 52
+    or_expression     go to state 53
+    and_expression    go to state 54
+    relation_expr     go to state 55
+    op_expr           go to state 56
+    term              go to state 57
+    factor            go to state 109
+
+
+State 65
+
+   40 printf_stmt: PRINTF LPAREN . func_call_idlist RPAREN SEMICOLON
+
+    TRUE         shift, and go to state 16
+    FALSE        shift, and go to state 17
+    SUB          shift, and go to state 28
+    LPAREN       shift, and go to state 29
+    AND          shift, and go to state 103
+    NOT          shift, and go to state 31
+    BIT_AND      shift, and go to state 32
+    CONSTCHAR    shift, and go to state 33
+    CONSTSTRING  shift, and go to state 104
+    ID           shift, and go to state 34
+    INTNUMBER    shift, and go to state 35
+
+    id                go to state 42
+    func_call_idlist  go to state 110
+    func_call_id      go to state 106
+    conststring       go to state 107
+    expression        go to state 108
+    assign_expr       go to state 51
+    not_expression    go to state 52
+    or_expression     go to state 53
+    and_expression    go to state 54
+    relation_expr     go to state 55
+    op_expr           go to state 56
+    term              go to state 57
+    factor            go to state 109
+
+
+State 66
+
+   84 factor: SUB expression .
+
+    $default  reduce using rule 84 (factor)
+
+
+State 67
+
+   79 factor: LPAREN expression . RPAREN
+
+    RPAREN  shift, and go to state 111
+
+
+State 68
+
+   70 op_expr: id . INC
+   71        | id . DEC
+   81 factor: id .
+
+    INC  shift, and go to state 78
+    DEC  shift, and go to state 79
+
+    $default  reduce using rule 81 (factor)
+
+
+State 69
+
+   55 not_expression: NOT or_expression .
+   57 or_expression: or_expression . OR and_expression
+
+    $default  reduce using rule 55 (not_expression)
+
+
+State 70
+
+   83 factor: BIT_AND id .
+
+    $default  reduce using rule 83 (factor)
+
+
+State 71
+
+    4 compound_stmt: LBRACE stmt_list RETURN . expression SEMICOLON RBRACE
+   41 ret_stmt: RETURN . expression SEMICOLON
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 112
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 72
+
+    3 compound_stmt: LBRACE stmt_list RBRACE .
+
+    $default  reduce using rule 3 (compound_stmt)
+
+
+State 73
+
+    6 stmt_list: stmt_list stmt .
+
+    $default  reduce using rule 6 (stmt_list)
+
+
+State 74
+
+   18 var_declaration: type idlist . SEMICOLON
+   25 idlist: idlist . COMMA id_or_assign
+
+    SEMICOLON  shift, and go to state 113
+    COMMA      shift, and go to state 114
+
+
+State 75
+
+   26 idlist: id_or_assign .
+
+    $default  reduce using rule 26 (idlist)
+
+
+State 76
+
+   27 id_or_assign: id .
+   51 assign_expr: id . EQ expression
+   52            | id . AEQ expression
+   53            | id . SEQ expression
+   54            | id . EQ assign_expr
+
+    EQ   shift, and go to state 80
+    AEQ  shift, and go to state 81
+    SEQ  shift, and go to state 82
+
+    $default  reduce using rule 27 (id_or_assign)
+
+
+State 77
+
+   28 id_or_assign: assign_expr .
+
+    $default  reduce using rule 28 (id_or_assign)
+
+
+State 78
+
+   70 op_expr: id INC .
+
+    $default  reduce using rule 70 (op_expr)
+
+
+State 79
+
+   71 op_expr: id DEC .
+
+    $default  reduce using rule 71 (op_expr)
+
+
+State 80
+
+   51 assign_expr: id EQ . expression
+   54            | id EQ . assign_expr
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 115
+    assign_expr     go to state 116
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 81
+
+   52 assign_expr: id AEQ . expression
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 117
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 82
+
+   53 assign_expr: id SEQ . expression
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 118
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 83
+
+   30 expr_stmt: expression SEMICOLON .
+
+    $default  reduce using rule 30 (expr_stmt)
+
+
+State 84
+
+   57 or_expression: or_expression OR . and_expression
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 68
+    and_expression  go to state 119
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 85
+
+   59 and_expression: and_expression AND . relation_expr
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id             go to state 68
+    relation_expr  go to state 120
+    op_expr        go to state 56
+    term           go to state 57
+    factor         go to state 58
+
+
+State 86
+
+   61 relation_expr: relation_expr GT . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 121
+    term     go to state 57
+    factor   go to state 58
+
+
+State 87
+
+   62 relation_expr: relation_expr LT . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 122
+    term     go to state 57
+    factor   go to state 58
+
+
+State 88
+
+   63 relation_expr: relation_expr EQUAL . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 123
+    term     go to state 57
+    factor   go to state 58
+
+
+State 89
+
+   64 relation_expr: relation_expr NEQUAL . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 124
+    term     go to state 57
+    factor   go to state 58
+
+
+State 90
+
+   65 relation_expr: relation_expr GE . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 125
+    term     go to state 57
+    factor   go to state 58
+
+
+State 91
+
+   66 relation_expr: relation_expr LE . op_expr
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id       go to state 68
+    op_expr  go to state 126
+    term     go to state 57
+    factor   go to state 58
+
+
+State 92
+
+   72 op_expr: op_expr ADD . term
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id      go to state 127
+    term    go to state 128
+    factor  go to state 58
+
+
+State 93
+
+   73 op_expr: op_expr SUB . term
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id      go to state 127
+    term    go to state 129
+    factor  go to state 58
+
+
+State 94
+
+   77 term: term MOD . factor
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id      go to state 127
+    factor  go to state 130
+
+
+State 95
+
+   75 term: term MUL . factor
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id      go to state 127
+    factor  go to state 131
+
+
+State 96
+
+   76 term: term DIV . factor
+
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id      go to state 127
+    factor  go to state 132
+
+
+State 97
+
+   31 if_stmt: IF LPAREN expression . RPAREN stmt
+   32        | IF LPAREN expression . RPAREN stmt ELSE stmt
+   33        | IF LPAREN expression . RPAREN compound_stmt
+   34        | IF LPAREN expression . RPAREN compound_stmt ELSE compound_stmt
+   35        | IF LPAREN expression . RPAREN compound_stmt ELSE if_stmt
+
+    RPAREN  shift, and go to state 133
+
+
+State 98
+
+   38 for_stmt: FOR LPAREN var_declaration . expression SEMICOLON expression RPAREN compound_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 134
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 99
+
+   37 for_stmt: FOR LPAREN expression . SEMICOLON expression SEMICOLON expression RPAREN compound_stmt
+
+    SEMICOLON  shift, and go to state 135
+
+
+State 100
+
+   36 while_stmt: WHILE LPAREN expression . RPAREN compound_stmt
+
+    RPAREN  shift, and go to state 136
+
+
+State 101
+
+   41 ret_stmt: RETURN expression SEMICOLON .
+
+    $default  reduce using rule 41 (ret_stmt)
+
+
+State 102
+
+   19 const_declaration: CONST type idlist . SEMICOLON
+   25 idlist: idlist . COMMA id_or_assign
+
+    SEMICOLON  shift, and go to state 137
+    COMMA      shift, and go to state 114
+
+
+State 103
+
+   47 func_call_id: AND . ID
+
+    ID  shift, and go to state 138
+
+
+State 104
+
+   48 conststring: CONSTSTRING .
+
+    $default  reduce using rule 48 (conststring)
+
+
+State 105
+
+   39 scanf_stmt: SCANF LPAREN func_call_idlist . RPAREN SEMICOLON
+   43 func_call_idlist: func_call_idlist . COMMA func_call_id
+
+    RPAREN  shift, and go to state 139
+    COMMA   shift, and go to state 140
+
+
+State 106
+
+   42 func_call_idlist: func_call_id .
+
+    $default  reduce using rule 42 (func_call_idlist)
+
+
+State 107
+
+   46 func_call_id: conststring .
+
+    $default  reduce using rule 46 (func_call_id)
+
+
+State 108
+
+   44 func_call_id: expression .
+
+    $default  reduce using rule 44 (func_call_id)
+
+
+State 109
+
+   45 func_call_id: factor .
+   78 term: factor .
+
+    RPAREN    reduce using rule 45 (func_call_id)
+    RPAREN    [reduce using rule 78 (term)]
+    COMMA     reduce using rule 45 (func_call_id)
+    COMMA     [reduce using rule 78 (term)]
+    $default  reduce using rule 78 (term)
+
+
+State 110
+
+   40 printf_stmt: PRINTF LPAREN func_call_idlist . RPAREN SEMICOLON
+   43 func_call_idlist: func_call_idlist . COMMA func_call_id
+
+    RPAREN  shift, and go to state 141
+    COMMA   shift, and go to state 140
+
+
+State 111
+
+   79 factor: LPAREN expression RPAREN .
+
+    $default  reduce using rule 79 (factor)
+
+
+State 112
+
+    4 compound_stmt: LBRACE stmt_list RETURN expression . SEMICOLON RBRACE
+   41 ret_stmt: RETURN expression . SEMICOLON
+
+    SEMICOLON  shift, and go to state 142
+
+
+State 113
+
+   18 var_declaration: type idlist SEMICOLON .
+
+    $default  reduce using rule 18 (var_declaration)
+
+
+State 114
+
+   25 idlist: idlist COMMA . id_or_assign
+
+    ID  shift, and go to state 34
+
+    id_or_assign  go to state 143
+    id            go to state 76
+    assign_expr   go to state 77
+
+
+State 115
+
+   51 assign_expr: id EQ expression .
+
+    $default  reduce using rule 51 (assign_expr)
+
+
+State 116
+
+   49 expression: assign_expr .
+   54 assign_expr: id EQ assign_expr .
+
+    MOD        reduce using rule 49 (expression)
+    MOD        [reduce using rule 54 (assign_expr)]
+    ADD        reduce using rule 49 (expression)
+    ADD        [reduce using rule 54 (assign_expr)]
+    SUB        reduce using rule 49 (expression)
+    SUB        [reduce using rule 54 (assign_expr)]
+    MUL        reduce using rule 49 (expression)
+    MUL        [reduce using rule 54 (assign_expr)]
+    DIV        reduce using rule 49 (expression)
+    DIV        [reduce using rule 54 (assign_expr)]
+    RPAREN     reduce using rule 49 (expression)
+    RPAREN     [reduce using rule 54 (assign_expr)]
+    GT         reduce using rule 49 (expression)
+    GT         [reduce using rule 54 (assign_expr)]
+    LT         reduce using rule 49 (expression)
+    LT         [reduce using rule 54 (assign_expr)]
+    EQUAL      reduce using rule 49 (expression)
+    EQUAL      [reduce using rule 54 (assign_expr)]
+    NEQUAL     reduce using rule 49 (expression)
+    NEQUAL     [reduce using rule 54 (assign_expr)]
+    GE         reduce using rule 49 (expression)
+    GE         [reduce using rule 54 (assign_expr)]
+    LE         reduce using rule 49 (expression)
+    LE         [reduce using rule 54 (assign_expr)]
+    OR         reduce using rule 49 (expression)
+    OR         [reduce using rule 54 (assign_expr)]
+    AND        reduce using rule 49 (expression)
+    AND        [reduce using rule 54 (assign_expr)]
+    SEMICOLON  reduce using rule 49 (expression)
+    SEMICOLON  [reduce using rule 54 (assign_expr)]
+    COMMA      reduce using rule 49 (expression)
+    COMMA      [reduce using rule 54 (assign_expr)]
+    $default   reduce using rule 49 (expression)
+
+
+State 117
+
+   52 assign_expr: id AEQ expression .
+
+    $default  reduce using rule 52 (assign_expr)
+
+
+State 118
+
+   53 assign_expr: id SEQ expression .
+
+    $default  reduce using rule 53 (assign_expr)
+
+
+State 119
+
+   57 or_expression: or_expression OR and_expression .
+   59 and_expression: and_expression . AND relation_expr
+
+    AND  shift, and go to state 85
+
+    $default  reduce using rule 57 (or_expression)
+
+
+State 120
+
+   59 and_expression: and_expression AND relation_expr .
+   61 relation_expr: relation_expr . GT op_expr
+   62              | relation_expr . LT op_expr
+   63              | relation_expr . EQUAL op_expr
+   64              | relation_expr . NEQUAL op_expr
+   65              | relation_expr . GE op_expr
+   66              | relation_expr . LE op_expr
+
+    GT      shift, and go to state 86
+    LT      shift, and go to state 87
+    EQUAL   shift, and go to state 88
+    NEQUAL  shift, and go to state 89
+    GE      shift, and go to state 90
+    LE      shift, and go to state 91
+
+    $default  reduce using rule 59 (and_expression)
+
+
+State 121
+
+   61 relation_expr: relation_expr GT op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 61 (relation_expr)
+
+
+State 122
+
+   62 relation_expr: relation_expr LT op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 62 (relation_expr)
+
+
+State 123
+
+   63 relation_expr: relation_expr EQUAL op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 63 (relation_expr)
+
+
+State 124
+
+   64 relation_expr: relation_expr NEQUAL op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 64 (relation_expr)
+
+
+State 125
+
+   65 relation_expr: relation_expr GE op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 65 (relation_expr)
+
+
+State 126
+
+   66 relation_expr: relation_expr LE op_expr .
+   72 op_expr: op_expr . ADD term
+   73        | op_expr . SUB term
+
+    ADD  shift, and go to state 92
+    SUB  shift, and go to state 93
+
+    $default  reduce using rule 66 (relation_expr)
+
+
+State 127
+
+   81 factor: id .
+
+    $default  reduce using rule 81 (factor)
+
+
+State 128
+
+   72 op_expr: op_expr ADD term .
+   75 term: term . MUL factor
+   76     | term . DIV factor
+   77     | term . MOD factor
+
+    MOD  shift, and go to state 94
+    MUL  shift, and go to state 95
+    DIV  shift, and go to state 96
+
+    $default  reduce using rule 72 (op_expr)
+
+
+State 129
+
+   73 op_expr: op_expr SUB term .
+   75 term: term . MUL factor
+   76     | term . DIV factor
+   77     | term . MOD factor
+
+    MOD  shift, and go to state 94
+    MUL  shift, and go to state 95
+    DIV  shift, and go to state 96
+
+    $default  reduce using rule 73 (op_expr)
+
+
+State 130
+
+   77 term: term MOD factor .
+
+    $default  reduce using rule 77 (term)
+
+
+State 131
+
+   75 term: term MUL factor .
+
+    $default  reduce using rule 75 (term)
+
+
+State 132
+
+   76 term: term DIV factor .
+
+    $default  reduce using rule 76 (term)
+
+
+State 133
+
+   31 if_stmt: IF LPAREN expression RPAREN . stmt
+   32        | IF LPAREN expression RPAREN . stmt ELSE stmt
+   33        | IF LPAREN expression RPAREN . compound_stmt
+   34        | IF LPAREN expression RPAREN . compound_stmt ELSE compound_stmt
+   35        | IF LPAREN expression RPAREN . compound_stmt ELSE if_stmt
+
+    INT        shift, and go to state 14
+    BOOL       shift, and go to state 15
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    CHAR       shift, and go to state 18
+    FLOAT      shift, and go to state 19
+    IF         shift, and go to state 20
+    FOR        shift, and go to state 21
+    WHILE      shift, and go to state 22
+    RETURN     shift, and go to state 23
+    CONST      shift, and go to state 24
+    STRING     shift, and go to state 25
+    SCANF      shift, and go to state 26
+    PRINTF     shift, and go to state 27
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    LBRACE     shift, and go to state 11
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    compound_stmt      go to state 144
+    stmt               go to state 145
+    declaration        go to state 38
+    var_declaration    go to state 39
+    const_declaration  go to state 40
+    type               go to state 41
+    id                 go to state 42
+    expr_stmt          go to state 43
+    if_stmt            go to state 44
+    while_stmt         go to state 45
+    for_stmt           go to state 46
+    scanf_stmt         go to state 47
+    printf_stmt        go to state 48
+    ret_stmt           go to state 49
+    expression         go to state 50
+    assign_expr        go to state 51
+    not_expression     go to state 52
+    or_expression      go to state 53
+    and_expression     go to state 54
+    relation_expr      go to state 55
+    op_expr            go to state 56
+    term               go to state 57
+    factor             go to state 58
+
+
+State 134
+
+   38 for_stmt: FOR LPAREN var_declaration expression . SEMICOLON expression RPAREN compound_stmt
+
+    SEMICOLON  shift, and go to state 146
+
+
+State 135
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON . expression SEMICOLON expression RPAREN compound_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 147
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 136
+
+   36 while_stmt: WHILE LPAREN expression RPAREN . compound_stmt
+
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 148
+
+
+State 137
+
+   19 const_declaration: CONST type idlist SEMICOLON .
+
+    $default  reduce using rule 19 (const_declaration)
+
+
+State 138
+
+   47 func_call_id: AND ID .
+
+    $default  reduce using rule 47 (func_call_id)
+
+
+State 139
+
+   39 scanf_stmt: SCANF LPAREN func_call_idlist RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 149
+
+
+State 140
+
+   43 func_call_idlist: func_call_idlist COMMA . func_call_id
+
+    TRUE         shift, and go to state 16
+    FALSE        shift, and go to state 17
+    SUB          shift, and go to state 28
+    LPAREN       shift, and go to state 29
+    AND          shift, and go to state 103
+    NOT          shift, and go to state 31
+    BIT_AND      shift, and go to state 32
+    CONSTCHAR    shift, and go to state 33
+    CONSTSTRING  shift, and go to state 104
+    ID           shift, and go to state 34
+    INTNUMBER    shift, and go to state 35
+
+    id              go to state 42
+    func_call_id    go to state 150
+    conststring     go to state 107
+    expression      go to state 108
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 109
+
+
+State 141
+
+   40 printf_stmt: PRINTF LPAREN func_call_idlist RPAREN . SEMICOLON
+
+    SEMICOLON  shift, and go to state 151
+
+
+State 142
+
+    4 compound_stmt: LBRACE stmt_list RETURN expression SEMICOLON . RBRACE
+   41 ret_stmt: RETURN expression SEMICOLON .
+
+    RBRACE  shift, and go to state 152
+
+    RBRACE    [reduce using rule 41 (ret_stmt)]
+    $default  reduce using rule 41 (ret_stmt)
+
+
+State 143
+
+   25 idlist: idlist COMMA id_or_assign .
+
+    $default  reduce using rule 25 (idlist)
+
+
+State 144
+
+   33 if_stmt: IF LPAREN expression RPAREN compound_stmt .
+   34        | IF LPAREN expression RPAREN compound_stmt . ELSE compound_stmt
+   35        | IF LPAREN expression RPAREN compound_stmt . ELSE if_stmt
+
+    ELSE  shift, and go to state 153
+
+    ELSE      [reduce using rule 33 (if_stmt)]
+    $default  reduce using rule 33 (if_stmt)
+
+
+State 145
+
+   31 if_stmt: IF LPAREN expression RPAREN stmt .
+   32        | IF LPAREN expression RPAREN stmt . ELSE stmt
+
+    ELSE  shift, and go to state 154
+
+    ELSE      [reduce using rule 31 (if_stmt)]
+    $default  reduce using rule 31 (if_stmt)
+
+
+State 146
+
+   38 for_stmt: FOR LPAREN var_declaration expression SEMICOLON . expression RPAREN compound_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 155
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 147
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression . SEMICOLON expression RPAREN compound_stmt
+
+    SEMICOLON  shift, and go to state 156
+
+
+State 148
+
+   36 while_stmt: WHILE LPAREN expression RPAREN compound_stmt .
+
+    $default  reduce using rule 36 (while_stmt)
+
+
+State 149
+
+   39 scanf_stmt: SCANF LPAREN func_call_idlist RPAREN SEMICOLON .
+
+    $default  reduce using rule 39 (scanf_stmt)
+
+
+State 150
+
+   43 func_call_idlist: func_call_idlist COMMA func_call_id .
+
+    $default  reduce using rule 43 (func_call_idlist)
+
+
+State 151
+
+   40 printf_stmt: PRINTF LPAREN func_call_idlist RPAREN SEMICOLON .
+
+    $default  reduce using rule 40 (printf_stmt)
+
+
+State 152
+
+    4 compound_stmt: LBRACE stmt_list RETURN expression SEMICOLON RBRACE .
+
+    $default  reduce using rule 4 (compound_stmt)
+
+
+State 153
+
+   34 if_stmt: IF LPAREN expression RPAREN compound_stmt ELSE . compound_stmt
+   35        | IF LPAREN expression RPAREN compound_stmt ELSE . if_stmt
+
+    IF      shift, and go to state 20
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 157
+    if_stmt        go to state 158
+
+
+State 154
+
+   32 if_stmt: IF LPAREN expression RPAREN stmt ELSE . stmt
+
+    INT        shift, and go to state 14
+    BOOL       shift, and go to state 15
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    CHAR       shift, and go to state 18
+    FLOAT      shift, and go to state 19
+    IF         shift, and go to state 20
+    FOR        shift, and go to state 21
+    WHILE      shift, and go to state 22
+    RETURN     shift, and go to state 23
+    CONST      shift, and go to state 24
+    STRING     shift, and go to state 25
+    SCANF      shift, and go to state 26
+    PRINTF     shift, and go to state 27
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    stmt               go to state 159
+    declaration        go to state 38
+    var_declaration    go to state 39
+    const_declaration  go to state 40
+    type               go to state 41
+    id                 go to state 42
+    expr_stmt          go to state 43
+    if_stmt            go to state 44
+    while_stmt         go to state 45
+    for_stmt           go to state 46
+    scanf_stmt         go to state 47
+    printf_stmt        go to state 48
+    ret_stmt           go to state 49
+    expression         go to state 50
+    assign_expr        go to state 51
+    not_expression     go to state 52
+    or_expression      go to state 53
+    and_expression     go to state 54
+    relation_expr      go to state 55
+    op_expr            go to state 56
+    term               go to state 57
+    factor             go to state 58
+
+
+State 155
+
+   38 for_stmt: FOR LPAREN var_declaration expression SEMICOLON expression . RPAREN compound_stmt
+
+    RPAREN  shift, and go to state 160
+
+
+State 156
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression SEMICOLON . expression RPAREN compound_stmt
+
+    TRUE       shift, and go to state 16
+    FALSE      shift, and go to state 17
+    SUB        shift, and go to state 28
+    LPAREN     shift, and go to state 29
+    NOT        shift, and go to state 31
+    BIT_AND    shift, and go to state 32
+    CONSTCHAR  shift, and go to state 33
+    ID         shift, and go to state 34
+    INTNUMBER  shift, and go to state 35
+
+    id              go to state 42
+    expression      go to state 161
+    assign_expr     go to state 51
+    not_expression  go to state 52
+    or_expression   go to state 53
+    and_expression  go to state 54
+    relation_expr   go to state 55
+    op_expr         go to state 56
+    term            go to state 57
+    factor          go to state 58
+
+
+State 157
+
+   34 if_stmt: IF LPAREN expression RPAREN compound_stmt ELSE compound_stmt .
+
+    $default  reduce using rule 34 (if_stmt)
+
+
+State 158
+
+   35 if_stmt: IF LPAREN expression RPAREN compound_stmt ELSE if_stmt .
+
+    $default  reduce using rule 35 (if_stmt)
+
+
+State 159
+
+   32 if_stmt: IF LPAREN expression RPAREN stmt ELSE stmt .
+
+    $default  reduce using rule 32 (if_stmt)
+
+
+State 160
+
+   38 for_stmt: FOR LPAREN var_declaration expression SEMICOLON expression RPAREN . compound_stmt
+
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 162
+
+
+State 161
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression SEMICOLON expression . RPAREN compound_stmt
+
+    RPAREN  shift, and go to state 163
+
+
+State 162
+
+   38 for_stmt: FOR LPAREN var_declaration expression SEMICOLON expression RPAREN compound_stmt .
+
+    $default  reduce using rule 38 (for_stmt)
+
+
+State 163
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression SEMICOLON expression RPAREN . compound_stmt
+
+    LBRACE  shift, and go to state 11
+
+    compound_stmt  go to state 164
+
+
+State 164
+
+   37 for_stmt: FOR LPAREN expression SEMICOLON expression SEMICOLON expression RPAREN compound_stmt .
+
+    $default  reduce using rule 37 (for_stmt)
